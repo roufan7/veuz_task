@@ -8,6 +8,7 @@ const RequestModal = ({ modalShow, setModalShow, selectedRange }) => {
     const [value, setValue] = useState([0, 0]);
     const [range, setRange] = useState([0, 0])
     const [productivity, setProductivity] = useState('')
+
     useEffect(() => {
         if (selectedRange?.start && selectedRange?.end) {
             const min = parseTimeToMinutes(selectedRange?.start);
@@ -17,8 +18,6 @@ const RequestModal = ({ modalShow, setModalShow, selectedRange }) => {
         }
     }, [selectedRange?.start])
 
-
-
     const parseTimeToMinutes = (timeStr) => {
         const [hours, minutes] = timeStr.split(':').map(Number);
         return hours * 60 + minutes;
@@ -26,7 +25,7 @@ const RequestModal = ({ modalShow, setModalShow, selectedRange }) => {
     };
 
     const formatMinutesToTime = (minutes) => {
-       return dayjs().startOf('day').add(minutes, 'minute').format('hh:mm A');
+        return dayjs().startOf('day').add(minutes, 'minute').format('hh:mm A');
     }
 
     const handleChange = (event, newValue) => {
@@ -54,12 +53,32 @@ const RequestModal = ({ modalShow, setModalShow, selectedRange }) => {
                     onChange={handleChange}
                     valueLabelDisplay="auto"
                     valueLabelFormat={formatMinutesToTime}
+                    sx={{
+                        color: '#c9c8c8', 
+                        height: '6px',
+                        '& .MuiSlider-thumb': {
+                            borderRadius: 0,
+                            backgroundColor: '#d88833',
+                            width: 20,
+                            height: 20,
+                            '&:hover, &.Mui-focusVisible, &.Mui-active': {
+                                boxShadow: 'none', 
+                            },
+                        },
+                        '& .MuiSlider-rail': {
+                            color: '#c9c8c8',
+                            opacity: 1,
+                        },
+                        '& .MuiSlider-track': {
+                            color: '#c9c8c8',
+                        },
+                    }}
                 />
                 <div className='mt-3'>
                     <Form.Control type='text' placeholder='Description' />
                 </div>
                 <div className='mt-3'>
-                    <span>Productivity</span>
+                    <span className='productivity-head'>Productivity</span>
                     <div className='d-flex align-items-center justify-content-between mt-2'>
                         <div className={`productivity-check productive ${productivity == 'PRODUCTIVE' ? 'selected' : ''}`} onClick={() => setProductivity('PRODUCTIVE')}><Form.Check checked={productivity == 'PRODUCTIVE'} label={'Productive'} /></div>
                         <div className={`productivity-check unproductive ${productivity == 'UNPRODUCTIVE' ? 'selected' : ''}`} onClick={() => setProductivity('UNPRODUCTIVE')}><Form.Check checked={productivity == 'UNPRODUCTIVE'} label={'Unproductive'} /></div>

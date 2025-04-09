@@ -11,14 +11,24 @@ const generateTimeIntervals = () => {
     const end = new Date(2023, 0, 1, 23, 0);
 
     let current = new Date(start);
-    while (current <= end) {
+    while (current < end) {
         times.push(current.getTime());
         current = new Date(current.getTime() + 5 * 60 * 1000);
     }
     return times;
 };
-
 const timeIntervals = generateTimeIntervals();
+
+const zeroRanges = [
+    [new Date(2023, 0, 1, 7, 0).getTime(), new Date(2023, 0, 1, 9, 0).getTime()],
+    [new Date(2023, 0, 1, 12, 0).getTime(), new Date(2023, 0, 1, 13, 0).getTime()],
+    [new Date(2023, 0, 1, 17, 0).getTime(), new Date(2023, 0, 1, 18, 0).getTime()],
+    [new Date(2023, 0, 1, 19, 30).getTime(), new Date(2023, 0, 1, 23, 0).getTime()],
+];
+
+const isZeroTime = (timestamp) => {
+    return zeroRanges.some(([start, end]) => timestamp >= start && timestamp < end);
+};
 
 
 const DualChart = () => {
@@ -104,14 +114,14 @@ const DualChart = () => {
                     Array.isArray(point.customData)
                 ) {
                     const rows = point.customData
-                        .map(app => `${app.app} - ${app.duration} min`)
+                        .map(app => `<div class='d-flex align-items-center justify-content-between'><div>${app.app}</div>  <div class='fw-bold'>${app.duration} min</div></div>`)
                         .join('<br/>');
 
                     return `
-        <div style="padding: 20px;">
-          <strong>${seriesName} - ${value}%</strong><br/>
-          ${rows}<br />
-          <strong>${formattedRange}</strong>
+        <div class='tooltip-container'>
+          <div class='tooltip-head'>${seriesName} - ${value}%</div>
+          <div class='tooltip-content'>${rows}</div>
+          <div class='tooltip-time'>${formattedRange}</div>
         </div>
       `;
                 }
@@ -136,7 +146,7 @@ const DualChart = () => {
             name: 'Productive',
             data: timeIntervals.map((t) => ({
                 x: t,
-                y: Math.floor(Math.random() * 50),
+                y: isZeroTime(t) ? 0 :  Math.floor(Math.random() * 50),
                 customData: [
                     { app: 'stackoverflow', duration: 1 },
                     { app: 'chrome', duration: 24 },
@@ -147,7 +157,7 @@ const DualChart = () => {
             name: 'Unproductive',
             data: timeIntervals.map((t) => ({
                 x: t,
-                y: Math.floor(Math.random() * 20),
+                y: isZeroTime(t) ? 0 : Math.floor(Math.random() * 20),
                 customData: [
                     { app: 'YouTube', duration: 10 },
                     { app: 'Spotify', duration: 5 }
@@ -156,7 +166,10 @@ const DualChart = () => {
         },
         {
             name: 'Neutral',
-            data: timeIntervals.map((t) => ({ x: t, y: Math.floor(Math.random() * 30) })),
+            data: timeIntervals.map((t) => ({
+                x: t,
+                y: isZeroTime(t) ? 0 : Math.floor(Math.random() * 30)
+            })),
         },
     ];
 
@@ -168,10 +181,23 @@ const DualChart = () => {
             events: {
                 dataPointSelection: function (event, chartContext, config) {
                     const { seriesIndex, dataPointIndex } = config;
-                    const point =
-                        chartContext.w.config.series[seriesIndex]?.data?.[dataPointIndex];
-                    if (point) handleBarClick(point);
+                    const seriesName = chartContext.w.config.series[seriesIndex]?.name;
+                    if (seriesName === 'Idle') {
+                        const point = chartContext.w.config.series[seriesIndex]?.data?.[dataPointIndex];
+                        if (point) handleBarClick(point);
+                    }
                 },
+                dataPointMouseEnter: function (event, chartContext, config) {
+                    const seriesName = chartContext.w.config.series[config.seriesIndex]?.name;
+                    if (seriesName === 'Idle') {
+                        event.target.style.cursor = 'pointer';
+                    } else {
+                        event.target.style.cursor = 'default';
+                    }
+                },
+                dataPointMouseLeave: function (event) {
+                    event.target.style.cursor = 'default';
+                }
             },
             zoom: { enabled: false },
         },
@@ -190,7 +216,7 @@ const DualChart = () => {
             labels: {
                 datetimeUTC: false,
                 datetimeFormatter: {
-                    hour: 'HH:mm',
+                    hour: 'hh:mm TT',  
                 },
                 style: {
                     fontSize: '12px',
@@ -200,7 +226,7 @@ const DualChart = () => {
         yaxis: { show: false },
         grid: {
             show: false,
-            padding: { top: -30 },
+            padding: { top: -30,left: 40,right:15 },
         },
         colors: ['#1e3a8a', '#e5e7eb'],
         tooltip: {
@@ -296,10 +322,10 @@ const DualChart = () => {
     ];
 
     return (
-        <div style={{ width: '100vw' }}>
-            <div style={{ width: '90vw', margin: 'auto' }}>
+        <div className='chart-container'>
+            <div className='chart-wrapper'>
                 <Chart options={topOptions} series={topSeries} type="bar" height={300} />
-                <div style={{ marginTop: '-40px' }}>
+                <div className='second-chart'>
                     <Chart options={bottomOptions} series={bottomSeries} type="rangeBar" height={80} />
                 </div>
             </div>

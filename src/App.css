@@ -1,10 +1,19 @@
+body {
+  font-family: 'Inter', sans-serif !important;
+  background-color: #a9abae !important;
+}
+
 .modal-header {
   border-bottom: none !important;
 }
 
+.modal-body {
+  padding: 30px !important;
+}
+
 .offline-head {
   font-size: 22px;
-  font-weight: 400;
+  font-weight: 500;
   margin-left: 10px;
 }
 
@@ -12,6 +21,9 @@
   border: 1px solid #ececec;
   padding: 5px 20px;
   border-radius: 5px;
+  margin: 0px 10px;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .productivity-check {
@@ -27,6 +39,8 @@
   padding: 5px 73px;
   border-radius: 10px;
   cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .submit-btn {
@@ -36,13 +50,87 @@
   background: linear-gradient(90deg, rgba(241, 180, 83, 1) 0%, rgba(234, 155, 80, 1) 99%);
   color: white;
   cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
 }
-.productivity-check.productive.selected{
-  background-color: #4ade80;
+
+.productivity-head {
+  font-size: 14px;
+  font-weight: 500;
 }
-.productivity-check.unproductive.selected{
+
+.productivity-check {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.productivity-check.productive.selected {
+  background-color: #98cd3d;
+  color: #f1f1f1;
+}
+
+.productivity-check.productive .form-check-input:checked {
+  background-color: #98cd3d;
+  border-color: #98cd3d;
+}
+
+.productivity-check.unproductive.selected {
   background-color: #f97316;
+  color: #f1f1f1;
 }
-.productivity-check.neutral.selected{
+
+.productivity-check.unproductive .form-check-input:checked {
+  background-color: #f97316;
+  border-color: #f97316;
+}
+
+.productivity-check.neutral.selected {
   background-color: #d1d5db;
+}
+
+.productivity-check.neutral .form-check-input:checked {
+  background-color: #d1d5db;
+  border-color: #d1d5db;
+}
+.chart-container{
+  width: 100vw;
+}
+.chart-wrapper {
+  width: 90vw;
+  margin: auto;
+  background-color: #f1f1f1;
+  padding: 10px;
+  border-radius: 10px;
+}
+.second-chart{
+  margin-top: -40px;
+  width: 100%;
+}
+
+.form-control:focus {
+  box-shadow: none !important;
+}
+
+.tooltip-container {
+  padding: 20px;
+ 
+}
+
+.tooltip-head {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.tooltip-time {
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 15px;
+  text-align: center;
+}
+
+.tooltip-content {
+  font-size: 13px;
+  font-weight: 400;
 }
