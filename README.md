@@ -1,8 +1,8 @@
 # Node version - 22.14.0
 
 # Run project
-step 1 - npm install
-step 2 - npm run dev
+- step 1 - npm install
+- step 2 - npm run dev
 
 # React + Vite
 
