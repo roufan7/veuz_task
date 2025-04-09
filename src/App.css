@@ -1,0 +1,48 @@
+.modal-header {
+  border-bottom: none !important;
+}
+
+.offline-head {
+  font-size: 22px;
+  font-weight: 400;
+  margin-left: 10px;
+}
+
+.time-wrapper {
+  border: 1px solid #ececec;
+  padding: 5px 20px;
+  border-radius: 5px;
+}
+
+.productivity-check {
+  border: 1px solid #e7e4e4;
+  width: 30%;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  border: 1px solid #e7e4e4;
+  padding: 5px 73px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.submit-btn {
+  border: 1px solid #e7e4e4;
+  padding: 5px 73px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, rgba(241, 180, 83, 1) 0%, rgba(234, 155, 80, 1) 99%);
+  color: white;
+  cursor: pointer;
+}
+.productivity-check.productive.selected{
+  background-color: #4ade80;
+}
+.productivity-check.unproductive.selected{
+  background-color: #f97316;
+}
+.productivity-check.neutral.selected{
+  background-color: #d1d5db;
+}
